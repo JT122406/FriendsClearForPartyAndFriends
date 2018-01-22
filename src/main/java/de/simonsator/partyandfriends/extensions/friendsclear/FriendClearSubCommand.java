@@ -4,15 +4,19 @@ import de.simonsator.partyandfriends.api.friends.abstractcommands.FriendSubComma
 import de.simonsator.partyandfriends.api.pafplayers.OnlinePAFPlayer;
 import de.simonsator.partyandfriends.api.pafplayers.PAFPlayer;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.event.PlayerDisconnectEvent;
+import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.config.Configuration;
+import net.md_5.bungee.event.EventHandler;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
-public class FriendClearSubCommand extends FriendSubCommand {
-	private Map<OnlinePAFPlayer, String> confirmationKey = new HashMap<>();
+public class FriendClearSubCommand extends FriendSubCommand implements Listener {
 	private final RandomString RANDOM_STRING;
+	private Map<UUID, String> confirmationKey = new HashMap<>();
 	private Configuration MESSAGES;
 
 	public FriendClearSubCommand(List<String> pCommands, int pPriority, String pHelp, String pPermission, int pKeyLength, Configuration pMessages) {
@@ -23,26 +27,28 @@ public class FriendClearSubCommand extends FriendSubCommand {
 
 	@Override
 	public void onCommand(OnlinePAFPlayer pPlayer, String[] args) {
-		if (confirmationKey.containsKey(pPlayer)) {
-			if (args.length == 1) {
-				pPlayer.sendMessage();
-				return;
-			}
-			if (args[1].equals(confirmationKey.get(pPlayer))) {
-				for (PAFPlayer friend : pPlayer.getFriends())
-					pPlayer.removeFriend(friend);
-				pPlayer.sendMessage();
-				return;
-			}
-			pPlayer.sendMessage();
-			return;
-		}
 		if (args.length == 1) {
 			String random = RANDOM_STRING.nextString();
-			confirmationKey.put(pPlayer, random);
-			pPlayer.sendMessage();
+			confirmationKey.put(pPlayer.getUniqueId(), random);
+			pPlayer.sendMessage(PREFIX + MESSAGES.getString("ANewConfirmationKeyWasGenerated").replace("[CONFIRMATION_KEY]", random));
 			return;
 		}
-		sendError(pPlayer, new TextComponent(MESSAGES));
+		if (confirmationKey.containsKey(pPlayer.getUniqueId())) {
+			if (args[1].equals(confirmationKey.get(pPlayer.getUniqueId()))) {
+				for (PAFPlayer friend : pPlayer.getFriends())
+					pPlayer.removeFriend(friend);
+				confirmationKey.remove(pPlayer.getUniqueId());
+				pPlayer.sendMessage(PREFIX + MESSAGES.getString("AllFriendsRemoved"));
+				return;
+			}
+			sendError(pPlayer, new TextComponent(PREFIX + MESSAGES.getString("IncorrectConfirmationKey")));
+			return;
+		}
+		sendError(pPlayer, new TextComponent(PREFIX + MESSAGES.getString("NoConfirmationKeyGeneratedYet")));
+	}
+
+	@EventHandler
+	public void onLeave(PlayerDisconnectEvent pEvent) {
+		confirmationKey.remove(pEvent.getPlayer().getUniqueId());
 	}
 }
