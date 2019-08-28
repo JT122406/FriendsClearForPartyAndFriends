@@ -6,7 +6,7 @@
 
 	<groupId>de.simonsator</groupId>
 	<artifactId>Friends-Clear-For-Party-And-Friends</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0.1-SNAPSHOT</version>
 
 	<build>
 		<plugins>
@@ -45,7 +45,7 @@
 		<dependency>
 			<groupId>de.simonsator</groupId>
 			<artifactId>BungeecordPartyAndFriends</artifactId>
-			<version>1.0.62</version>
+			<version>1.0.74</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -61,6 +61,11 @@
 			<version>LATEST</version>
 			<type>javadoc</type>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.bukkit</groupId>
+			<artifactId>bukkit</artifactId>
+			<version>1.13-R0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
