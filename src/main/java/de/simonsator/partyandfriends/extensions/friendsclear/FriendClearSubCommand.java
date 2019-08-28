@@ -1,28 +1,32 @@
 package de.simonsator.partyandfriends.extensions.friendsclear;
 
+import de.simonsator.partyandfriends.api.PAFExtension;
 import de.simonsator.partyandfriends.api.friends.abstractcommands.FriendSubCommand;
 import de.simonsator.partyandfriends.api.pafplayers.OnlinePAFPlayer;
 import de.simonsator.partyandfriends.api.pafplayers.PAFPlayer;
+import de.simonsator.partyandfriends.utilities.ConfigurationCreator;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.event.PlayerDisconnectEvent;
-import net.md_5.bungee.api.plugin.Listener;
-import net.md_5.bungee.config.Configuration;
-import net.md_5.bungee.event.EventHandler;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class FriendClearSubCommand extends FriendSubCommand implements Listener {
+public class FriendClearSubCommand extends FriendSubCommand {
 	private final RandomString RANDOM_STRING;
 	private Map<UUID, String> confirmationKey = new HashMap<>();
-	private Configuration MESSAGES;
+	private ConfigurationCreator MESSAGES;
 
-	public FriendClearSubCommand(List<String> pCommands, int pPriority, String pHelp, String pPermission, int pKeyLength, Configuration pMessages) {
+	public FriendClearSubCommand(List<String> pCommands, int pPriority, String pHelp, String pPermission, int pKeyLength, ConfigurationCreator pMessages, PAFExtension pPlugin) {
 		super(pCommands, pPriority, pHelp, pPermission);
 		RANDOM_STRING = new RandomString(pKeyLength);
 		MESSAGES = pMessages;
+		try {
+			Class.forName("org.bukkit.Bukkit");
+			new FriendClearKeyRemoverBukkit(this, pPlugin);
+		} catch (ClassNotFoundException e) {
+			new FriendClearKeyRemoverBungee(this, pPlugin);
+		}
 	}
 
 	@Override
@@ -47,8 +51,7 @@ public class FriendClearSubCommand extends FriendSubCommand implements Listener 
 		sendError(pPlayer, new TextComponent(PREFIX + MESSAGES.getString("NoConfirmationKeyGeneratedYet")));
 	}
 
-	@EventHandler
-	public void onLeave(PlayerDisconnectEvent pEvent) {
-		confirmationKey.remove(pEvent.getPlayer().getUniqueId());
+	public void removeKey(UUID pUUID) {
+		confirmationKey.remove(pUUID);
 	}
 }

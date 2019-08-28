@@ -7,12 +7,12 @@ import java.io.File;
 import java.io.IOException;
 
 public class FriendClearMessages extends LanguageConfiguration {
-	protected FriendClearMessages(Language pLanguage, File pFile) throws IOException {
-		super(pLanguage, pFile);
+	protected FriendClearMessages(File pFile) throws IOException {
+		super(Language.ENGLISH, pFile);
 		readFile();
 		loadDefaults();
 		saveFile();
-		process(configuration);
+		process();
 	}
 
 	private void loadDefaults() {
@@ -21,10 +21,5 @@ public class FriendClearMessages extends LanguageConfiguration {
 		set("IncorrectConfirmationKey", " &7The confirmation key you entered was incorrect. Please try again entering your confirmation key or generate a new one by using &6/friend clear&7.");
 		set("AllFriendsRemoved", " &7All your friends were removed from your friend list.");
 		set("NoConfirmationKeyGeneratedYet", " &7No confirmation key was created yet. Please use &6/friend clear &7to generate one&7.");
-	}
-
-	@Override
-	public void reloadConfiguration() throws IOException {
-		throw new UnsupportedOperationException();
 	}
 }
