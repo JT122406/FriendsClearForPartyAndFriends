@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class FriendClearConfig extends ConfigurationCreator {
 	protected FriendClearConfig(File file, PAFExtension pPlugin) throws IOException {
-		super(file, pPlugin);
+		super(file, pPlugin, true);
 		readFile();
 		loadDefaults();
 		saveFile();
@@ -19,10 +19,5 @@ public class FriendClearConfig extends ConfigurationCreator {
 		set("Priority", 100);
 		set("Permission", "");
 		set("ConfirmationKeyLength", 5);
-	}
-
-	@Override
-	public void reloadConfiguration() throws IOException {
-		throw new UnsupportedOperationException();
 	}
 }

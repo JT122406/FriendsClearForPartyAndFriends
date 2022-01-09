@@ -1,7 +1,7 @@
 name: Friends-Clear-For-Party-And-Friends
 version: ${project.version}
 author: Simonsator
-depends: [PartyAndFriends]
-depend: [PartyAndFriends]
+depends: [ PartyAndFriends ]
+depend: [ PartyAndFriends ]
 main: de.simonsator.partyandfriends.extensions.friendsclear.FriendsClearPlugin
 description: Adds the command /friends clear

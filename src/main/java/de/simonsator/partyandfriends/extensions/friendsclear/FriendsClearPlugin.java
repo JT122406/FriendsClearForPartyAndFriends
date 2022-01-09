@@ -11,11 +11,12 @@ public class FriendsClearPlugin extends PAFExtension {
 	@Override
 	public void onEnable() {
 		try {
-			ConfigurationCreator config = new FriendClearConfig(new File(getDataFolder(), "config.yml"), this);
-			ConfigurationCreator messages = new FriendClearMessages(new File(getDataFolder(), "messages.yml"));
+			ConfigurationCreator config = new FriendClearConfig(new File(getConfigFolder(), "config.yml"), this);
+			ConfigurationCreator messages = new FriendClearMessages(new File(getConfigFolder(), "messages.yml"));
 			FriendClearSubCommand friendClearSubCommand = new FriendClearSubCommand(config.getStringList("Names"), config.getInt("Priority"),
 					messages.getString("CommandUsage"), config.getString("Permission"), config.getInt("ConfirmationKeyLength"), messages, this);
 			Friends.getInstance().addCommand(friendClearSubCommand);
+			registerAsExtension();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

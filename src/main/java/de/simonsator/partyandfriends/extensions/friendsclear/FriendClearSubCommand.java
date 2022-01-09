@@ -14,8 +14,8 @@ import java.util.UUID;
 
 public class FriendClearSubCommand extends FriendSubCommand {
 	private final RandomString RANDOM_STRING;
-	private Map<UUID, String> confirmationKey = new HashMap<>();
-	private ConfigurationCreator MESSAGES;
+	private final Map<UUID, String> confirmationKey = new HashMap<>();
+	private final ConfigurationCreator MESSAGES;
 
 	public FriendClearSubCommand(List<String> pCommands, int pPriority, String pHelp, String pPermission, int pKeyLength, ConfigurationCreator pMessages, PAFExtension pPlugin) {
 		super(pCommands, pPriority, pHelp, pPermission);
@@ -45,10 +45,10 @@ public class FriendClearSubCommand extends FriendSubCommand {
 				pPlayer.sendMessage(PREFIX + MESSAGES.getString("AllFriendsRemoved"));
 				return;
 			}
-			sendError(pPlayer, new TextComponent(PREFIX + MESSAGES.getString("IncorrectConfirmationKey")));
+			sendError(pPlayer, new TextComponent(TextComponent.fromLegacyText(PREFIX + MESSAGES.getString("IncorrectConfirmationKey"))));
 			return;
 		}
-		sendError(pPlayer, new TextComponent(PREFIX + MESSAGES.getString("NoConfirmationKeyGeneratedYet")));
+		sendError(pPlayer, new TextComponent(TextComponent.fromLegacyText(PREFIX + MESSAGES.getString("NoConfirmationKeyGeneratedYet"))));
 	}
 
 	public void removeKey(UUID pUUID) {
