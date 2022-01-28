@@ -5,3 +5,4 @@ depends: [ PartyAndFriends ]
 depend: [ PartyAndFriends ]
 main: de.simonsator.partyandfriends.extensions.friendsclear.FriendsClearPlugin
 description: Adds the command /friends clear
+api-version: 1.13

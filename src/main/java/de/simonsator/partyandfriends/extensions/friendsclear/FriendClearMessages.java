@@ -1,5 +1,6 @@
 package de.simonsator.partyandfriends.extensions.friendsclear;
 
+import de.simonsator.partyandfriends.api.PAFExtension;
 import de.simonsator.partyandfriends.utilities.Language;
 import de.simonsator.partyandfriends.utilities.LanguageConfiguration;
 
@@ -7,8 +8,8 @@ import java.io.File;
 import java.io.IOException;
 
 public class FriendClearMessages extends LanguageConfiguration {
-	protected FriendClearMessages(File pFile) throws IOException {
-		super(Language.ENGLISH, pFile);
+	protected FriendClearMessages(File pFile, PAFExtension pPlugin) throws IOException {
+		super(Language.ENGLISH, pFile, pPlugin, true);
 		readFile();
 		loadDefaults();
 		saveFile();
